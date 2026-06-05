@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'dart:math';
 void main() {
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -12,43 +12,72 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
+  Random random = Random();
   int x = 0;
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('rebuild');
     return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Center(child: Text('Lottery App')),
+          backgroundColor: Colors.blue,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: Text('Lottery Winning Number is 4')),
+            SizedBox(height: 15),
+            Container(
+              height: 250,
+              width: 300,
+              decoration: BoxDecoration(
+                color:  x == 4 ? Colors.green.shade50 :Colors.grey.withOpacity(.4),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: x == 4 ?  Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.waving_hand_rounded, color: Colors.green, size: 35),
+                  SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      'Congratulation you won !! ',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ) :
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.error, color: Colors.red, size: 35),
+                  SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      'Better Luck Next Time Your Lucky number is $x\n Try again',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            x = random.nextInt(5);
+            print("tapped");
+            setState(() {
 
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blue,
-            title: Text('Lottery App UI'),
-          ),
-          body: SafeArea(
-              child: Center(
-                child: Text(x.toString(),
-                  style: TextStyle(
-                    fontSize: 50,
-                  ),),
-              )
-          ),
-          floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: ()
-              {
-                x++;
-                setState(() {
-
-                });
-                print(x);
-              }
-
-          ),
-        )
-
+            });
+          },
+          child: Icon(Icons.refresh_sharp),
+        ),
+      ),
     );
   }
 }
-
